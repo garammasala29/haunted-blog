@@ -48,6 +48,14 @@ class BlogsController < ApplicationController
     @blog = Blog.find(params[:id])
   end
 
+  def blog_params
+    if current_user.premium?
+      params.require(:blog).permit(:title, :content, :secret, :random_eyecatch)
+    else
+      params.require(:blog).permit(:title, :content, :secret)
+    end
+  end
+
   def set_my_blog
     @blog = current_user.blogs.find(params[:id])
   end
